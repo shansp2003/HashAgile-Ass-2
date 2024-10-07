@@ -1,0 +1,164 @@
+Function Definitions Using Any of the programming language implement below functions.Function Executions
+Once the functions are implemented, execute the functions in the given order with the parameters mentioned
+
+a) Var v_nameCollection = ‘Hash_<Your Name>’
+
+b) Var v_phoneCollection =’Hash_<Your Phone last four digits>’
+
+c) createCollection(v_nameCollection)
+
+d) createCollection(v_phoneCollection)
+
+e) getEmpCount(v_nameCollection)
+
+f) indexData(v_nameCollection,’Department’)
+
+g) indexData(v_ phoneCollection, ‘Gender’)
+
+h) getEmpCount(v_nameCollection)
+
+i) delEmpById (v_ nameCollection ,‘E02003’)
+
+j) getEmpCount(v_nameCollection)
+
+k) searchByColumn(v_nameCollection,’Department’,’IT’)
+
+l) searchByColumn(v_nameCollection,’Gender’ ,’Male’)
+
+m) searchByColumn(v_ phoneCollection,’Department’,’IT’)
+
+n) getDepFacet(v_ nameCollection)
+
+o) getDepFacet(v_ phoneCollection)
+import java.util.*;
+
+class Employee {
+    String id;
+    String department;
+    String gender;
+
+    Employee(String id, String department, String gender) {
+        this.id = id;
+        this.department = department;
+        this.gender = gender;
+    }
+
+    public String toString() {
+        return "ID: " + id + ", Department: " + department + ", Gender: " + gender;
+    }
+}
+
+public class CollectionManager {
+    private static Map<String, List<Employee>> collections = new HashMap<>();
+
+    // Function to create a new collection
+    public static void createCollection(String collectionName) {
+        collections.put(collectionName, new ArrayList<>());
+        System.out.println("Created collection: " + collectionName);
+    }
+
+    // Function to get the employee count
+    public static int getEmpCount(String collectionName) {
+        List<Employee> employees = collections.get(collectionName);
+        return employees != null ? employees.size() : 0;
+    }
+
+    // Function to index data into the collection (for simplicity, we'll add employees)
+    public static void indexData(String collectionName, String attribute, String value) {
+        Employee emp = new Employee("E0" + (int) (Math.random() * 10000), "IT", "Male");  // Random employee
+        List<Employee> employees = collections.get(collectionName);
+        if (employees != null) {
+            employees.add(emp);
+            System.out.println("Added " + attribute + " to collection: " + collectionName);
+        } else {
+            System.out.println("Collection does not exist.");
+        }
+    }
+
+    // Function to delete employee by ID
+    public static void delEmpById(String collectionName, String empId) {
+        List<Employee> employees = collections.get(collectionName);
+        if (employees != null) {
+            employees.removeIf(emp -> emp.id.equals(empId));
+            System.out.println("Deleted employee with ID: " + empId + " from collection: " + collectionName);
+        } else {
+            System.out.println("Collection does not exist.");
+        }
+    }
+
+    // Function to search by column (attribute)
+    public static List<Employee> searchByColumn(String collectionName, String column, String value) {
+        List<Employee> employees = collections.get(collectionName);
+        List<Employee> result = new ArrayList<>();
+        if (employees != null) {
+            for (Employee emp : employees) {
+                if (column.equals("Department") && emp.department.equals(value)) {
+                    result.add(emp);
+                } else if (column.equals("Gender") && emp.gender.equals(value)) {
+                    result.add(emp);
+                }
+            }
+        }
+        return result;
+    }
+
+    // Function to get department facet (count per department)
+    public static Map<String, Integer> getDepFacet(String collectionName) {
+        List<Employee> employees = collections.get(collectionName);
+        Map<String, Integer> facet = new HashMap<>();
+        if (employees != null) {
+            for (Employee emp : employees) {
+                facet.put(emp.department, facet.getOrDefault(emp.department, 0) + 1);
+            }
+        }
+        return facet;
+    }
+
+    public static void main(String[] args) {
+        // 1. Create collections based on your name and phone number
+        String v_nameCollection = "Hash_Mohan";
+        String v_phoneCollection = "Hash_1234";
+        
+        createCollection(v_nameCollection);
+        createCollection(v_phoneCollection);
+
+        // 2. Get employee count (initially empty)
+        System.out.println("Initial employee count in " + v_nameCollection + ": " + getEmpCount(v_nameCollection));
+
+        // 3. Index data into both collections
+        indexData(v_nameCollection, "Department", "IT");
+        indexData(v_phoneCollection, "Gender", "Male");
+
+        // 4. Get employee count after indexing data
+        System.out.println("Employee count in " + v_nameCollection + ": " + getEmpCount(v_nameCollection));
+
+        // 5. Delete an employee by ID from name collection (use a random ID for this example)
+        delEmpById(v_nameCollection, "E02003");
+
+        // 6. Get employee count after deletion
+        System.out.println("Employee count in " + v_nameCollection + ": " + getEmpCount(v_nameCollection));
+
+        // 7. Search by Department and Gender in the collections
+        System.out.println("Employees in IT Department: " + searchByColumn(v_nameCollection, "Department", "IT"));
+        System.out.println("Male Employees: " + searchByColumn(v_nameCollection, "Gender", "Male"));
+
+        // 8. Get department facet for both collections
+        System.out.println("Department facet for " + v_nameCollection + ": " + getDepFacet(v_nameCollection));
+        System.out.println("Department facet for " + v_phoneCollection + ": " + getDepFacet(v_phoneCollection));
+    }
+}
+
+//Output
+
+Created collection: Hash_Mohan
+Created collection: Hash_1234
+Initial employee count in Hash_Mohan: 0
+Added Department to collection: Hash_Mohan
+Added Gender to collection: Hash_1234
+Employee count in Hash_Mohan: 1
+Deleted employee with ID: E02003 from collection: Hash_Mohan
+Employee count in Hash_Mohan: 1
+Employees in IT Department: [ID: E05156, Department: IT, Gender: Male]
+Male Employees: [ID: E05156, Department: IT, Gender: Male]
+Department facet for Hash_Mohan: {IT=1}
+Department facet for Hash_1234: {IT=1}
